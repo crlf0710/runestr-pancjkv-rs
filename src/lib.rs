@@ -1,7 +1,11 @@
 #![deny(warnings, missing_docs, missing_debug_implementations)]
 //! `rune`-based PanCJKV IVD Collection support
-//! PanCJKV IVD Collection is an unregistered IVD collection,
+//!
+//! [PanCJKV IVD Collection](https://github.com/adobe-type-tools/pancjkv-ivd-collection/) is an unregistered IVD collection,
 //! that makes use of Unicode Variation Selectors to distinguish CJK ideograph glyphs on a per-region basis.
+//!
+//! For example, `"\u{6211}"` (`'我'`, `U+6211`) when annotated with `PanCJKVRegion::JP`, will become `"\u{6211}\u{E01E8}"`,
+//! where the variation selector `U+E01E8` means Japan region in PanCJKV IVD Collection.
 //!
 //! This crate add support for PanCJKV IVD Collection support to `rune`-based iterators,
 //! by allowing unannotated CJK ideograph abstract characters be transformed into annotated form explicitly.
@@ -11,7 +15,7 @@ use runestr::rune;
 #[allow(dead_code)]
 mod tables;
 
-/// PanCJKV Regions
+/// PanCJKV Region
 #[derive(Clone, Copy, Debug)]
 pub enum PanCJKVRegion {
     /// Kāngxī
@@ -55,7 +59,7 @@ const PAN_CJKV_REGION_DATA: &[(PanCJKVRegion, char)] = &[
 #[allow(dead_code)]
 const PAN_CJKV_REGION_COUNT: usize = PAN_CJKV_REGION_DATA.len();
 
-/// Annotate rune iterator items with PanCJKV region
+/// Annotate rune iterator items with PanCJKV region.
 pub trait PanCJKVAnnotate: Sized {
     /// Retrieves an iterator that transforms all runes representing CJK ideographs to its PanCJKV IVS
     /// form within a specific region.
@@ -74,7 +78,8 @@ where
     }
 }
 
-/// The iterator that annotates rune items with PanCJKV region
+/// An iterator that annotates rune items with PanCJKV region,
+/// usually created with [`PanCJKVAnnotate::annotate_with_pan_cjkv_region`].
 #[derive(Debug)]
 pub struct PanCJKVAnnotateIter<I> {
     runes: I,
