@@ -2,6 +2,11 @@
 name = "runestr-pancjkv"
 version = "0.1.0"
 edition = "2018"
+license = "MIT OR Apache-2.0"
+description = "`rune`-based Pan-CJKV support"
+documentation = "https://docs.rs/runestr-pancjkv"
+categories = ["text-processing"]
+readme = "README.md"
 
 [dependencies]
 runestr = {version = "0.1.1"}
